@@ -11,8 +11,8 @@ void RotatedRectOp();
 
 int main()
 {
-	// 1. ¿µ»óÀ» È­¸é¿¡ Ãâ·Â
-	std::cout << "Hello OpenCV " << CV_VERSION << std::endl;
+	// 1. ì˜ìƒì„ í™”ë©´ì— ì¶œë ¥
+	cout << "Hello OpenCV " << CV_VERSION << endl;
 
 	Mat img;
 	img = imread("lenna.bmp");
@@ -31,8 +31,8 @@ int main()
 
 	waitKey();
 
-	// 2. ±âº» ÀÚ·áÇü Å¬·¡½º È°¿ë
-	// Point_, Size_, Rect_, RotatedRect Å¬·¡½º
+	// 2. ê¸°ë³¸ ìžë£Œí˜• í´ëž˜ìŠ¤ í™œìš©
+	// Point_, Size_, Rect_, RotatedRect í´ëž˜ìŠ¤
 
 	PointOp();
 	SizeOp();
