@@ -13,7 +13,8 @@
 
 ### 3.1.1 Point_ 클래스
 
-`Point_ 클래스`는 2차원 평면 위에 있는 점의 좌표를 표현하는 템플릿 클래스
+`Point_ 클래스`는 2차원 평면 위에 있는 점의 좌표를 표현하는 템플릿 클래스   
+→ 2차원 좌표를 나타내는 x와 y라는 이름의 멤버 변수를 가진다.
 
 ```c++
 template<typename _Tp> class Point_
@@ -39,5 +40,86 @@ typedef Point_<int64> Point2l;
 typedef Point_<float> Point2f;
 typedef Point_<double> Point2d;
 typedef Point2i Point;
+```
+
+### 3.1.2 Size_ 클래스
+`Size_ 클래스`는 영상 또는 사각형 영역의 크기를 표현하는 템플릿 클래스   
+→ 사각형 영역의 가로와 세로 크기를 나타내는 width와 height 멤버 변수를 가진다.
+
+```c++
+template<typename _Tp> class Size_
+{
+public:
+  Size_();
+  Size(_Tp _width, _Tp _height);
+  Size(cosnt Size_& sz);
+  
+  Size_& operator = (const Size_& sz);
+  
+  _Tp area() const;
+  bool empty() const;
+  
+  _Tp width, height;
+};
+
+typedef Size_<int> Size2i;
+typedef Size_<int64> Size2l;
+typedef Size_<float> Size2f;
+typedef Size_<double> Size2d;
+typedef Size2i Size;
+```
+
+### 3.1.3 Rect_ 클래스
+`Rect_ 클래스`는 사각형의 위치와 크기 정보를 표현하는 템플릿 클래스   
+→ 사각형의 좌측 상단 점의 좌표를 나타내는 x, y 멤버 변수와 사각형의 가로 및 세로 크기를 나타내는 width, height 멤버 변수를 가진다.
+
+```c++
+template<typename _Tp> class Rect_
+{
+public:
+  Rect_();
+  Rect_(_Tp _x, _Tp _y);
+  Rect_(const Rect_& r);
+  Rect_(const Point_<_Tp>& org, const Size_<_Tp>& sz);
+  Rect_(const Point_<_Tp>& pt1, const Point_<_Tp>& pt2);
+  
+  Rect_& operator = (const Rect_& r);
+  
+  Point_<_Tp> t1() const;
+  Point_<_Tp> br() const;
+  Size_<_Tp> size() const;
+  _Tp area() const;
+  bool empty() const;
+  bool contains(const Point_<_Tp>& pt) const;
+  
+  _Tp x, y, width, height;
+};
+
+typedef Rect_<int> Rect2i;
+typedef Rect_<float> Rect2f;
+typedef Rect_<double> Rect2d;
+typedef Rect2i Rect;
+```
+
+### 3.1.4 RotatedRect 클래스
+`RotatedRect 클래스`는 회전된 사각형을 표현하는 클래스   
+→ 회전된 사각형의 중심 좌표를 나타내는 center, 사각형의 가로 및 세로 크기를 나타내는 size, 회전 각도 정보를 나타내는 angle을 멤버 변수로 가진다.
+
+```c++
+class RotaedRect
+{
+public:
+  RotatedRect();
+  RotatedRect(const Point2f& _center, const Size2f& _size, float _angle);
+  RotatedRect(const Point2f& _point1, const Point2f& _point2, const Point2f& _point3);
+  
+  void points(Point2f pts[]) const;
+  Rect boundingRect() const;
+  Rect_<float> boundingRect2f() const;
+  
+  Point2f center;
+  Size2f size;
+  float angle;
+};
 ```
 
