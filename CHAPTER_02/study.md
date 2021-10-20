@@ -23,6 +23,7 @@
         * C:\opencv\build\x64\cv15\bin 폴더: OpenCv 프로그램 실행 시 필여한 DLL 파일과 OpenCV 유틸리티 프로그램 저장
         * C:\opencv\build\x64\cv15\lib 폴더: OpenCV DLL 파일이 생성될 때 함께 만들어지는 import library 파일 저장
   * 시스템 환경 변수 PATH에 OpenCV DLL 파일이 있는 폴더 추가하기  
+    * OpenCV DLL 파일은 여러 OpenCV 응용 프로그램에서 공통으로 사용하므로 PATH에 추가하여 사용하는 것이 편리 
 
 <br>
 
