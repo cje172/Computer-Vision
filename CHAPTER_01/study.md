@@ -22,8 +22,8 @@
 * **디지털 영상 표현**
   * `픽셀`: 영상을 구성하는 최소 단위
   * 영상은 픽셀이 바둑판처럼 균일한 격자 형태로 배열되어 있는 형태로 표현된다.
-    <p align = "center">
-      <img src = "/assets/security-3.png">
+    <p align = "left">
+      <img src = "/assets/lattice.PNG" width="300px" height="300px">
     </p>
   * 영상은 2차원 평면 위에 픽셀 값이 나열된 형태이기 때문에 영상을 2차원 행렬로 표현할 수 있다.
   * 행렬에서 aj,i는 j번째 행, i번째 열에 위치한 행렬 원소 = (i,j) 좌표에 위치한 픽셀
