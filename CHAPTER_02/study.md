@@ -31,8 +31,8 @@
 * **OpenCV 프로젝트 만들기**
   * 프로젝트의 solution platform을 x64로 변경
   * OpenCV 프로젝트 속성 설정 
-    <p align = "center">
-      <img src = "/assets/security-3.png">
+    <p align = "left">
+      <img src = "/assets/setting_mode.PNG">
     </p>
     
 * **BMP 영상의 화면 출력**
