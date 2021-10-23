@@ -1,4 +1,4 @@
-# CHAPTER 03. OpenCV 주요 클래스
+# CHAPTER 03. OpenCV 주요 클래스 (1)
 
 ## 3.1 기본 자료형 클래스
 
@@ -123,3 +123,33 @@ public:
 };
 ```
 
+### 3.1.5 Range 클래스
+`Range 클래스`는 범위 또는 구간을 표현하는 클래스
+→ 범위의 시작과 끝을 나타내는 start와 end 멤버 변수를 가진다.
+
+```c++
+class Range
+{
+public:
+  Range();
+  Range(int _start, int _end);
+  
+  int size() const;
+  bool empty() const;
+  static Range all();
+  
+  int start, end;
+};
+```
+
+### 3.1.6 String 클래스
+`String 클래스`는 문자열을 저장하고 처리하는 클래스   
+→ c++ 표준 라이브러리의 std::string 클래스를 String 클래스로 이름 재정의 ⇒ OpenCV 4.0 버전부터 std::string 클래스와 String 클래스는 완전히 같은 클래스
+
+* OpenCV 제공 함수
+```c++
+> String format(const char* fmt, ...);
+  * fmt : 형식 문자열
+  * ... : 가변 인자
+  * 반환값 : 지정한 형식으로 생성된 문자열
+```
