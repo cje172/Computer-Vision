@@ -6,8 +6,8 @@
 * 사각형 영역의 크기를 표현하는 [Size_ 클래스](#312-size_-%ED%81%B4%EB%9E%98%EC%8A%A4)
 * 사각형의 위치와 크기 정보를 나타내는 [Rect_ 클래스](#313-rect_-%ED%81%B4%EB%9E%98%EC%8A%A4)
 * 회전된 사각형을 표현하는 [RotatedRect 클래스](#314-rotatedrect-%ED%81%B4%EB%9E%98%EC%8A%A4)
-* 범위를 표현하는 [Range 클래스]()
-* 문자열을 표현하는 [String 클래스]()
+* 범위를 표현하는 [Range 클래스](#315-range-%ED%81%B4%EB%9E%98%EC%8A%A4)
+* 문자열을 표현하는 [String 클래스](#316-string-%ED%81%B4%EB%9E%98%EC%8A%A4)
 
 <br/>
 
