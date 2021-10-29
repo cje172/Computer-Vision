@@ -9,6 +9,6 @@
 * [CHAPTER 02. OpenCV 설치와 기초 사용법](https://github.com/cje172/Computer-Vision/blob/main/CHAPTER_02/study.md)
 * [CHAPTER 03. OpenCV 주요 클래스](https://github.com/cje172/Computer-Vision/blob/main/CHAPTER_03)
   * [(1) 기본 자료형 클래스](https://github.com/cje172/Computer-Vision/blob/main/CHAPTER_03/study_1.md)
-  * [(2) Mat 클래스]()
+  * [(2) Mat 클래스](https://github.com/cje172/Computer-Vision/blob/main/CHAPTER_03/study_2.md)
   * [(3) Vec과 Scalar 클래스]()
   * [(4) InputArray와 OutputArray 클래스]()
