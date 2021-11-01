@@ -10,5 +10,5 @@
 * [CHAPTER 03. OpenCV 주요 클래스](https://github.com/cje172/Computer-Vision/blob/main/CHAPTER_03)
   * [(1) 기본 자료형 클래스](https://github.com/cje172/Computer-Vision/blob/main/CHAPTER_03/study_1.md)
   * [(2) Mat 클래스](https://github.com/cje172/Computer-Vision/blob/main/CHAPTER_03/study_2.md)
-  * [(3) Vec과 Scalar 클래스]()
-  * [(4) InputArray와 OutputArray 클래스]()
+  * [(3) Vec과 Scalar 클래스](https://github.com/cje172/Computer-Vision/tree/main/CHAPTER_03)
+  * [(4) InputArray와 OutputArray 클래스](https://github.com/cje172/Computer-Vision/tree/main/CHAPTER_03)
