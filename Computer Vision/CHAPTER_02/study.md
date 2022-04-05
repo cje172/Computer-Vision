@@ -7,6 +7,7 @@
   * 모듈: OpenCV에서 제공하는 다양한 클래스와 함수를 그 기능과 성격에 따라 모아서 만들어 놓은 OpenCV의 부분 라이브러리
     * OpenCV 모듈은 각각 별도의 *.lib 파일과 *.dll 파일로 만들어짐 
   * world 모듈: OpenCV 모듈을 모두 합쳐서 하나의 모듈로 재구성한 것 
+
 <br>
 
 > OpenCV 공식 사이트: https://opencv.org/   
