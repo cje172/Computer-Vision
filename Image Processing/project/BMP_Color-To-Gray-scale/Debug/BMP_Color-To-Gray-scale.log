@@ -1,0 +1,4 @@
+﻿  Source.cpp
+c:\temp\bmp_color-to-gray-scale\source.cpp(51): warning C4101: 'B' :참조되지 않은 지역 변수입니다.
+c:\temp\bmp_color-to-gray-scale\source.cpp(51): warning C4101: 'R' :참조되지 않은 지역 변수입니다.
+  BMP_Color-To-Gray-scale.vcxproj -> C:\Temp\BMP_Color-To-Gray-scale\Debug\BMP_Color-To-Gray-scale.exe
