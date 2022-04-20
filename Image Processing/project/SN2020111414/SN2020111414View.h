@@ -46,6 +46,16 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnReverseImg();
+	BITMAPINFO *BmInfo;
+	int height;
+	int width;
+	unsigned char m_RevImg[256][256];
+	afx_msg void OnConstAdd();
+	afx_msg void OnConstSub();
+	afx_msg void OnConstMul();
+	afx_msg void OnConstDiv();
+	afx_msg void OnContrastUp();
+	afx_msg void OnContrastDown();
 };
 
 #ifndef _DEBUG  // SN2020111414View.cpp의 디버그 버전

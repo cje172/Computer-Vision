@@ -30,6 +30,12 @@ BEGIN_MESSAGE_MAP(CSN2020111414View, CScrollView)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
 	ON_COMMAND(IDM_REVERSE_IMG, &CSN2020111414View::OnReverseImg)
+	ON_COMMAND(IDM_CONST_ADD, &CSN2020111414View::OnConstAdd)
+	ON_COMMAND(IDM_CONST_SUB, &CSN2020111414View::OnConstSub)
+	ON_COMMAND(IDM_CONST_MUL, &CSN2020111414View::OnConstMul)
+	ON_COMMAND(IDM_CONST_DIV, &CSN2020111414View::OnConstDiv)
+	ON_COMMAND(IDM_CONTRAST_UP, &CSN2020111414View::OnContrastUp)
+	ON_COMMAND(IDM_CONTRAST_DOWN, &CSN2020111414View::OnContrastDown)
 END_MESSAGE_MAP()
 
 // CSN2020111414View 생성/소멸
@@ -37,7 +43,26 @@ END_MESSAGE_MAP()
 CSN2020111414View::CSN2020111414View() noexcept
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
+	height = width = 256;
+	int rwsize = (((width * 8) + 31) / 32 * 4);	 // 4바이트의 배수여야 함
+	BmInfo = (BITMAPINFO*)malloc(sizeof(BITMAPINFO) + 256 * sizeof(RGBQUAD));
 
+	BmInfo->bmiHeader.biBitCount = 8;
+	BmInfo->bmiHeader.biClrImportant = 256;
+	BmInfo->bmiHeader.biClrUsed = 256;
+	BmInfo->bmiHeader.biCompression = 0;	//  BI_RGB = 0
+	BmInfo->bmiHeader.biHeight = height;
+	BmInfo->bmiHeader.biPlanes = 1;
+	BmInfo->bmiHeader.biSize = 40;
+	BmInfo->bmiHeader.biSizeImage = rwsize * height;
+	BmInfo->bmiHeader.biWidth = width;
+	BmInfo->bmiHeader.biXPelsPerMeter = 0;
+	BmInfo->bmiHeader.biYPelsPerMeter = 0;
+	for (int i = 0; i < 256; i++)	// 팔레트 넘버는 256
+	{
+		BmInfo->bmiColors[i].rgbRed = BmInfo->bmiColors[i].rgbGreen = BmInfo->bmiColors[i].rgbBlue = i;
+		BmInfo->bmiColors[i].rgbReserved = 0;
+	}
 }
 
 CSN2020111414View::~CSN2020111414View()
@@ -62,6 +87,21 @@ void CSN2020111414View::OnDraw(CDC* pDC)
 		return;
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
+	for (int i = 0; i < height; i++)	// 입력 영상 출력
+		for (int j = 0; j < width; j++)
+			m_RevImg[i][j] = pDoc->m_InImg[height - i - 1][j];
+
+	SetDIBitsToDevice(pDC->GetSafeHdc(), 0, 0, width, height,
+		0, 0, 0, height, m_RevImg, BmInfo, DIB_RGB_COLORS);
+
+	for (int i = 0; i < height; i++)	// 결과 영상 출력
+		for (int j = 0; j < width; j++)
+			m_RevImg[i][j] = pDoc->m_OutImg[height - i - 1][j];
+	
+	SetDIBitsToDevice(pDC->GetSafeHdc(), 300, 0, width, height,
+		0, 0, 0, height, m_RevImg, BmInfo, DIB_RGB_COLORS);
+	
+	/*
 	for (int i = 0; i < 256; i++)
 	{
 		for (int j = 0; j < 256; j++)
@@ -72,6 +112,7 @@ void CSN2020111414View::OnDraw(CDC* pDC)
 			pDC->SetPixel(j + 300, i, RGB(OutVal, OutVal, OutVal));
 		}
 	}
+	*/
 }
 
 void CSN2020111414View::OnInitialUpdate()
@@ -163,5 +204,139 @@ void CSN2020111414View::OnReverseImg()
 			pDoc->m_OutImg[i][j] = 255 - pDoc->m_InImg[i][j];
 	}
 
+	Invalidate(FALSE);
+}
+
+
+void CSN2020111414View::OnConstAdd()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			int tempVal = pDoc->m_InImg[i][j] + 60;  // 더할 값은 60
+			tempVal = tempVal > 255 ? 255 : tempVal;
+			pDoc->m_OutImg[i][j] = (unsigned char)tempVal;
+		}
+	}
+
+	Invalidate(FALSE);
+}
+
+
+void CSN2020111414View::OnConstSub()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			int tempVal = pDoc->m_InImg[i][j] - 60;
+			tempVal = tempVal < 0 ? 0 : tempVal;
+			pDoc->m_OutImg[i][j] = (unsigned char)tempVal;
+		}
+	}
+	Invalidate(FALSE);  // 화면 갱신
+}
+
+
+void CSN2020111414View::OnConstMul()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			//int tempVal = pDoc->m_InImg[i][j] * 1.4;
+			int tempVal = pDoc->m_InImg[i][j] * 2.0;
+			tempVal = tempVal > 255 ? 255 : tempVal;
+			pDoc->m_OutImg[i][j] = (unsigned char)tempVal;
+		}
+	}
+	Invalidate(FALSE);  // 화면 갱신
+}
+
+
+void CSN2020111414View::OnConstDiv()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			//int tempVal = pDoc->m_InImg[i][j] / 1.4;
+			int tempVal = pDoc->m_InImg[i][j] / 2.0;
+			tempVal = tempVal > 255 ? 255 : tempVal;
+			tempVal = tempVal < 0 ? 0 : tempVal;
+			pDoc->m_OutImg[i][j] = (unsigned char)tempVal;
+		}
+	}
+	Invalidate(FALSE);  // 화면 갱신
+}
+
+
+void CSN2020111414View::OnContrastUp()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	double slope = 2.0;
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			int tempVal = (128 + slope * (pDoc->m_InImg[i][j] - 128));
+			tempVal = tempVal < 0 ? 0 : tempVal;
+			tempVal = tempVal > 255 ? 255 : tempVal;
+			pDoc->m_OutImg[i][j] = (unsigned char)tempVal;
+		}
+	}
+	Invalidate(FALSE);
+}
+
+
+void CSN2020111414View::OnContrastDown()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	double slope = 1 / 2.0;
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			int tempVal = (128 + slope * (pDoc->m_InImg[i][j] - 128));
+			tempVal = tempVal < 0 ? 0 : tempVal;
+			tempVal = tempVal > 255 ? 255 : tempVal;
+			pDoc->m_OutImg[i][j] = (unsigned char)tempVal;
+		}
+	}
 	Invalidate(FALSE);
 }
