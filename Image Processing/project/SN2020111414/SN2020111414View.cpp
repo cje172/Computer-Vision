@@ -36,6 +36,7 @@ BEGIN_MESSAGE_MAP(CSN2020111414View, CScrollView)
 	ON_COMMAND(IDM_CONST_DIV, &CSN2020111414View::OnConstDiv)
 	ON_COMMAND(IDM_CONTRAST_UP, &CSN2020111414View::OnContrastUp)
 	ON_COMMAND(IDM_CONTRAST_DOWN, &CSN2020111414View::OnContrastDown)
+	ON_COMMAND(IDM_SALT_AND_PEPPER, &CSN2020111414View::OnSaltAndPepper)
 END_MESSAGE_MAP()
 
 // CSN2020111414View 생성/소멸
@@ -97,10 +98,10 @@ void CSN2020111414View::OnDraw(CDC* pDC)
 	for (int i = 0; i < height; i++)	// 결과 영상 출력
 		for (int j = 0; j < width; j++)
 			m_RevImg[i][j] = pDoc->m_OutImg[height - i - 1][j];
-	
+
 	SetDIBitsToDevice(pDC->GetSafeHdc(), 300, 0, width, height,
 		0, 0, 0, height, m_RevImg, BmInfo, DIB_RGB_COLORS);
-	
+
 	/*
 	for (int i = 0; i < 256; i++)
 	{
@@ -336,6 +337,41 @@ void CSN2020111414View::OnContrastDown()
 			tempVal = tempVal < 0 ? 0 : tempVal;
 			tempVal = tempVal > 255 ? 255 : tempVal;
 			pDoc->m_OutImg[i][j] = (unsigned char)tempVal;
+		}
+	}
+	Invalidate(FALSE);
+}
+
+
+void CSN2020111414View::OnSaltAndPepper()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	srand(time(0));	 // rand()의 seed 값을 time()를 사용하여 지정
+	double randNum;  // 난수를 저장할 변수
+	
+	
+	// 잡음 비율: 2%로 생성
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			randNum = (rand() - RAND_MAX / 2.0) * (2.0 / RAND_MAX);  // 난수를 - 1과 1 사이의 값으로 변환
+
+			int tempVal = pDoc->m_InImg[i][j];
+			pDoc->m_OutImg[i][j] = (unsigned char)tempVal;
+
+			// 난수가 (1 - 2/100) 보다 크면 salt 잡음 생성
+			if (randNum > (1 - 2.0 / 100))
+				pDoc->m_OutImg[i][j] = 255;
+
+			// 난수가 -(1 - 2/100) 보다 작으면 pepper 잡음 생성
+			if (randNum < (-(1 - 2.0 / 100)))
+				pDoc->m_OutImg[i][j] = 0;
 		}
 	}
 	Invalidate(FALSE);

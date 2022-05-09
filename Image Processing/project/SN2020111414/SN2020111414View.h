@@ -56,6 +56,7 @@ public:
 	afx_msg void OnConstDiv();
 	afx_msg void OnContrastUp();
 	afx_msg void OnContrastDown();
+	afx_msg void OnSaltAndPepper();
 };
 
 #ifndef _DEBUG  // SN2020111414View.cpp의 디버그 버전
