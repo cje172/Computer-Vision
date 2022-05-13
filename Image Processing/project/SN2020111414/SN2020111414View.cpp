@@ -37,6 +37,11 @@ BEGIN_MESSAGE_MAP(CSN2020111414View, CScrollView)
 	ON_COMMAND(IDM_CONTRAST_UP, &CSN2020111414View::OnContrastUp)
 	ON_COMMAND(IDM_CONTRAST_DOWN, &CSN2020111414View::OnContrastDown)
 	ON_COMMAND(IDM_SALT_AND_PEPPER, &CSN2020111414View::OnSaltAndPepper)
+	ON_COMMAND(IDM_BITPLANE_7, &CSN2020111414View::OnBitplane7)
+	ON_COMMAND(IDM_BITPLANE_4, &CSN2020111414View::OnBitplane4)
+	ON_COMMAND(IDM_BITPLANE_0, &CSN2020111414View::OnBitplane0)
+	ON_COMMAND(IDM_WATERMARK_INSERTION, &CSN2020111414View::OnWatermarkInsertion)
+	ON_COMMAND(IDM_WATERMARK_DETECTION, &CSN2020111414View::OnWatermarkDetection)
 END_MESSAGE_MAP()
 
 // CSN2020111414View 생성/소멸
@@ -374,5 +379,164 @@ void CSN2020111414View::OnSaltAndPepper()
 				pDoc->m_OutImg[i][j] = 0;
 		}
 	}
+	Invalidate(FALSE);
+}
+
+
+void CSN2020111414View::OnBitplane7()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	int position = 7;
+
+	unsigned char mask = 0x01;
+	mask <<= position;
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			pDoc->m_OutImg[i][j] = (mask & pDoc->m_InImg[i][j]) ? 255 : 0;
+		}
+	}
+	Invalidate(FALSE);
+}
+
+
+void CSN2020111414View::OnBitplane4()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	int position = 4;
+
+	unsigned char mask = 0x01;
+	mask <<= position;
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			pDoc->m_OutImg[i][j] = (mask & pDoc->m_InImg[i][j]) ? 255 : 0;
+		}
+	}
+	Invalidate(FALSE);
+}
+
+
+void CSN2020111414View::OnBitplane0()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	int position = 0;
+
+	unsigned char mask = 0x01;
+	mask <<= position;
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			pDoc->m_OutImg[i][j] = (mask & pDoc->m_InImg[i][j]) ? 255 : 0;
+		}
+	}
+	Invalidate(FALSE);
+}
+
+
+void CSN2020111414View::OnWatermarkInsertion()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	// 최하위 비트 평면에 정보 넣기
+	int position = 0;
+
+	unsigned char mask = 0x01;
+	mask <<= position;
+
+	for (int i = 0; i < 64; i++)
+		for (int j = 0; j < 256; j++)
+			pDoc->m_OutImg[j][i] = 0;
+
+	for (int i = 64; i < 128; i++)
+		for (int j = 0; j < 256; j++)
+			pDoc->m_OutImg[j][i] = 255;
+
+	for (int i = 128; i < 192; i++)
+		for (int j = 0; j < 256; j++)
+			pDoc->m_OutImg[j][i] = 0;
+
+	for (int i = 192; i < 256; i++)
+		for (int j = 0; j < 256; j++)
+			pDoc->m_OutImg[j][i] = 255;
+
+
+	// Image Combine
+	unsigned char tmpImg[256][256];
+
+	for (int p = 1; p <= 7; p++) // 1부터 7까지 반복
+	{
+		mask = 0x01; // 초기화
+		mask <<= p;
+
+		for (int i = 0; i < height; i++)
+			for (int j = 0; j < width; j++)
+				tmpImg[i][j] = (mask & pDoc->m_InImg[i][j]) ? 255 : 0;
+
+		for (int i = 0; i < height; i++)
+			for (int j = 0; j < width; j++)
+				pDoc->m_OutImg[i][j] += tmpImg[i][j] & mask;
+	}
+
+
+	// 출력 영상을 "wm.raw" 파일로도 저장
+	FILE *outfile;
+	fopen_s(&outfile, "wm.raw", "wb");
+	fwrite(pDoc->m_OutImg, sizeof(char), 256 * 256, outfile);
+	fclose(outfile);
+
+	Invalidate(FALSE);
+}
+
+
+void CSN2020111414View::OnWatermarkDetection()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	// 위에서 저장한 "wm.raw" 파일을 입력 영상으로 읽어오기
+	FILE *infile;
+	errno_t err = fopen_s(&infile, "wm.raw", "rb");
+
+	if (err != 0)
+	{
+		printf("File open error!!");
+		return;
+	}
+
+	fread(pDoc->m_InImg, sizeof(char), 256 * 256, infile);
+	fclose(infile);
+
+	// 0번 비트평면 이미지를 표시하는 함수 호출
+	OnBitplane0();
+
 	Invalidate(FALSE);
 }

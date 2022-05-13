@@ -57,6 +57,11 @@ public:
 	afx_msg void OnContrastUp();
 	afx_msg void OnContrastDown();
 	afx_msg void OnSaltAndPepper();
+	afx_msg void OnBitplane7();
+	afx_msg void OnBitplane4();
+	afx_msg void OnBitplane0();
+	afx_msg void OnWatermarkInsertion();
+	afx_msg void OnWatermarkDetection();
 };
 
 #ifndef _DEBUG  // SN2020111414View.cpp의 디버그 버전
