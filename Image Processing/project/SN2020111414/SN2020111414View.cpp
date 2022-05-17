@@ -13,6 +13,8 @@
 #include "SN2020111414Doc.h"
 #include "SN2020111414View.h"
 
+#include "CBinCtrlDlg.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -37,11 +39,20 @@ BEGIN_MESSAGE_MAP(CSN2020111414View, CScrollView)
 	ON_COMMAND(IDM_CONTRAST_UP, &CSN2020111414View::OnContrastUp)
 	ON_COMMAND(IDM_CONTRAST_DOWN, &CSN2020111414View::OnContrastDown)
 	ON_COMMAND(IDM_SALT_AND_PEPPER, &CSN2020111414View::OnSaltAndPepper)
+	ON_COMMAND(ID_IMGHISTO, &CSN2020111414View::OnImghisto)
+	ON_COMMAND(IDM_BINARIZATION, &CSN2020111414View::OnBinarization)
+	ON_COMMAND(IDM_BIN_DYNAMIC, &CSN2020111414View::OnBinDynamic)
+	ON_COMMAND(IDM_IMGHISTO, &CSN2020111414View::OnImghisto)
 	ON_COMMAND(IDM_BITPLANE_7, &CSN2020111414View::OnBitplane7)
 	ON_COMMAND(IDM_BITPLANE_4, &CSN2020111414View::OnBitplane4)
 	ON_COMMAND(IDM_BITPLANE_0, &CSN2020111414View::OnBitplane0)
 	ON_COMMAND(IDM_WATERMARK_INSERTION, &CSN2020111414View::OnWatermarkInsertion)
 	ON_COMMAND(IDM_WATERMARK_DETECTION, &CSN2020111414View::OnWatermarkDetection)
+	ON_COMMAND(IDM_HISTO_EQUAL, &CSN2020111414View::OnHistoEqual)
+	ON_COMMAND(IDM_IMAGE_BLEND, &CSN2020111414View::OnImageBlend)
+	ON_COMMAND(IDM_HISTO_STRETCH, &CSN2020111414View::OnHistoStretch)
+	ON_COMMAND(IDM_HISTO_UPSTRETCH, &CSN2020111414View::OnHistoUpstretch)
+	ON_COMMAND(IDM_HISTO_SPEC, &CSN2020111414View::OnHistoSpec)
 END_MESSAGE_MAP()
 
 // CSN2020111414View 생성/소멸
@@ -383,6 +394,52 @@ void CSN2020111414View::OnSaltAndPepper()
 }
 
 
+void CSN2020111414View::OnImghisto()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	pDoc->m_ImgHisto(256, 256);
+	Invalidate(FALSE);
+}
+
+
+void CSN2020111414View::OnBinarization()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			if (pDoc->m_InImg[i][j] > 100) pDoc->m_OutImg[i][j] = 255;
+			else pDoc->m_OutImg[i][j] = 0;
+		}
+	}
+	Invalidate(FALSE);
+}
+
+
+void CSN2020111414View::OnBinDynamic()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	CBinCtrlDlg pbinCtrlDlg;  // 슬라이드컨트롤 클래스 변수의 선언
+	pbinCtrlDlg.DoModal();  // 슬라이드컨트롤박스의 호출
+}
+
+
 void CSN2020111414View::OnBitplane7()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
@@ -392,7 +449,7 @@ void CSN2020111414View::OnBitplane7()
 		return;
 
 	int position = 7;
-
+	
 	unsigned char mask = 0x01;
 	mask <<= position;
 
@@ -476,7 +533,7 @@ void CSN2020111414View::OnWatermarkInsertion()
 	for (int i = 64; i < 128; i++)
 		for (int j = 0; j < 256; j++)
 			pDoc->m_OutImg[j][i] = 255;
-
+	
 	for (int i = 128; i < 192; i++)
 		for (int j = 0; j < 256; j++)
 			pDoc->m_OutImg[j][i] = 0;
@@ -484,7 +541,7 @@ void CSN2020111414View::OnWatermarkInsertion()
 	for (int i = 192; i < 256; i++)
 		for (int j = 0; j < 256; j++)
 			pDoc->m_OutImg[j][i] = 255;
-
+	
 
 	// Image Combine
 	unsigned char tmpImg[256][256];
@@ -493,7 +550,7 @@ void CSN2020111414View::OnWatermarkInsertion()
 	{
 		mask = 0x01; // 초기화
 		mask <<= p;
-
+		
 		for (int i = 0; i < height; i++)
 			for (int j = 0; j < width; j++)
 				tmpImg[i][j] = (mask & pDoc->m_InImg[i][j]) ? 255 : 0;
@@ -502,7 +559,7 @@ void CSN2020111414View::OnWatermarkInsertion()
 			for (int j = 0; j < width; j++)
 				pDoc->m_OutImg[i][j] += tmpImg[i][j] & mask;
 	}
-
+	
 
 	// 출력 영상을 "wm.raw" 파일로도 저장
 	FILE *outfile;
@@ -526,9 +583,9 @@ void CSN2020111414View::OnWatermarkDetection()
 	FILE *infile;
 	errno_t err = fopen_s(&infile, "wm.raw", "rb");
 
-	if (err != 0)
-	{
-		printf("File open error!!");
+	if (err != 0) 
+	{ 
+		printf("File open error!!"); 
 		return;
 	}
 
@@ -539,4 +596,87 @@ void CSN2020111414View::OnWatermarkDetection()
 	OnBitplane0();
 
 	Invalidate(FALSE);
+}
+
+
+void CSN2020111414View::OnHistoEqual()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	// 도큐먼트 클래스에 있는 히스토그램 평활화 함수 호출
+	pDoc->m_HistoEqual(256, 256);
+
+	Invalidate(FALSE);		// 화면 갱신
+}
+
+
+void CSN2020111414View::OnImageBlend()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	pDoc->TwoImgLoad();
+
+	CBinCtrlDlg pbinCtrlDlg;  // 슬라이드컨트롤 클래스 변수의 선언
+	pbinCtrlDlg.DoModal();  // 슬라이드컨트롤박스의 호출
+}
+
+
+void CSN2020111414View::OnHistoStretch()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	// 도큐먼트 클래스에 있는 히스토그램 스트레칭 함수 호출
+	pDoc->m_HistoStretch(256, 256);
+
+	Invalidate(FALSE);  // 화면 갱신
+}
+
+
+void CSN2020111414View::OnHistoUpstretch()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	pDoc->m_HistoUpstretch(256, 256, 20, 20);
+
+	Invalidate(FALSE);  // 화면 갱신
+}
+
+
+void CSN2020111414View::OnHistoSpec()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CSN2020111414Doc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	CFile file;
+	CFileDialog opendlg1(TRUE);
+
+	if (opendlg1.DoModal() == IDOK)
+	{
+		file.Open(opendlg1.GetPathName(), CFile::modeRead);
+		file.Read(pDoc->m_InImg1, sizeof(pDoc->m_InImg1));
+		file.Close();
+	}
+
+	pDoc->m_HistoSpec(256, 256);
+
+	Invalidate(FALSE);  // 화면 갱신
 }

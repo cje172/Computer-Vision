@@ -30,6 +30,10 @@
 #define ID_VIEW_APPLOOK_OFF_2007_AQUA   218
 #define ID_VIEW_APPLOOK_WINDOWS_7       219
 #define IDS_EDIT_MENU                   306
+#define IDD_DIALOG1                     310
+#define IDC_EDIT1                       1000
+#define IDC_BUTTON1                     1001
+#define IDC_SLIDER1                     1002
 #define ID_32771                        32771
 #define IDM_REVERSE_IMG                 32772
 #define ID_32773                        32773
@@ -49,23 +53,39 @@
 #define IDM_SP_NOISE                    32787
 #define IDM                             32788
 #define ID_32789                        32789
-#define ID_32790                        32790
-#define ID_32791                        32791
+#define ID_IMGHISTO                     32790
+#define IDM_BINARIZATION                32791
 #define ID_32792                        32792
-#define ID_32793                        32793
-#define IDM_BITPLANE_7                  32794
-#define IDM_BITPLANE_4                  32795
-#define IDM_BITPLANE_0                  32796
-#define IDM_WATERMARK_INSERTION         32797
-#define IDM_WATERMARK_DETECTION         32798
+#define IDM_BIN_DYNAMIC                 32793
+#define IDM_IMGHISTO                    32794
+#define ID_32795                        32795
+#define ID_32796                        32796
+#define ID_32797                        32797
+#define IDM_BITPLANE_0                  32798
+#define IDM_BITPLANE_4                  32799
+#define IDM_BITPLANE_7                  32800
+#define ID_32801                        32801
+#define ID_32802                        32802
+#define IDM_WATERMARK_INSERTION         32803
+#define IDM_WATERMARK_DETECTION         32804
+#define ID_32805                        32805
+#define IDM_HISTO_EQUAL                 32806
+#define ID_32807                        32807
+#define IDM_IMAGE_BLEND                 32808
+#define ID_32809                        32809
+#define IDM_HISTO_STRETCH               32810
+#define ID_32811                        32811
+#define IDM_HISTO_UPSTRETCH             32812
+#define ID_32813                        32813
+#define IDM_HISTO_SPEC                  32814
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32799
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_RESOURCE_VALUE        312
+#define _APS_NEXT_COMMAND_VALUE         32815
+#define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

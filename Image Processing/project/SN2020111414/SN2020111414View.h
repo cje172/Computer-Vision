@@ -57,11 +57,19 @@ public:
 	afx_msg void OnContrastUp();
 	afx_msg void OnContrastDown();
 	afx_msg void OnSaltAndPepper();
+	afx_msg void OnImghisto();
+	afx_msg void OnBinarization();
+	afx_msg void OnBinDynamic();
 	afx_msg void OnBitplane7();
 	afx_msg void OnBitplane4();
 	afx_msg void OnBitplane0();
 	afx_msg void OnWatermarkInsertion();
 	afx_msg void OnWatermarkDetection();
+	afx_msg void OnHistoEqual();
+	afx_msg void OnImageBlend();
+	afx_msg void OnHistoStretch();
+	afx_msg void OnHistoUpstretch();
+	afx_msg void OnHistoSpec();
 };
 
 #ifndef _DEBUG  // SN2020111414View.cpp의 디버그 버전

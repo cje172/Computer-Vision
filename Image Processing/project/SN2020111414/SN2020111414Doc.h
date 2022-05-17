@@ -48,4 +48,17 @@ protected:
 public:
 	unsigned char m_InImg[256][256];
 	unsigned char m_OutImg[256][256];
+protected:
+	int m_HistoArr[256];
+public:
+	unsigned char m_InImg1[256][256];
+	unsigned char m_InImg2[256][256];
+	void TwoImgLoad();
+	void m_ImgHisto(int height, int width);
+	void m_BinThres(int height, int width, int binThres);
+	void m_HistoEqual(int height, int width);
+	void ImageBlend(int height, int width, int alpha);
+	void m_HistoStretch(int height, int width);
+	void m_HistoUpstretch(int height, int width, int lowPercent, int highPercent);
+	void m_HistoSpec(int height, int width);
 };
